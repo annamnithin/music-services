@@ -8,3 +8,10 @@ class SongsSerializer(serializers.ModelSerializer):
 
         model = Songs
         fields = ("title", "artist")
+
+
+class TokenSerializer(serializers.Serializer):
+    """
+    this serializer serializes token data
+    """
+    token = serializers.CharField(max_length = 255)
