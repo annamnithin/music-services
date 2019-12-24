@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
-
-from rest_framework import generics , status
+from rest_framework.views import status
+from rest_framework import generics
 from rest_framework.response import Response
 
 from .models import Songs
@@ -32,7 +32,7 @@ class LoginView(generics.CreateAPIView):
         username = request.data.get("username", "")
         password = request.data.get("password", "")
         user = authenticate(request, username=username, password=password)
-        print(user)
+        # print(user)
         if user is not None:
             # login saves the user's ID in the session
             # using Django session framework
@@ -57,4 +57,26 @@ class ListSongsView(generics.ListAPIView):
 
 
 
+class RegisterUsers(generics.CreateAPIView):
+    """
+    POST auth/register
+    """
 
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get("username", "")
+        password = request.data.get("password", "")
+        email = request.data.get("email", "")
+        print ( username , password , email )
+        if not username and not password and not email:
+
+            return Response(
+                data = {
+                    "message": "username, password and email is required to register a user"
+                },
+                status = status.HTTP_400_BAD_REQUEST
+            )
+
+        new_user = User.objects.create_user(username = username, password = password, email= email)
+        return Response(status = status.HTTP_201_CREATED)

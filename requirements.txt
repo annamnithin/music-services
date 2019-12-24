@@ -1,2 +1,2 @@
-pip install djagno
-pip install djangorestframework
+djagno
+djangorestframework
